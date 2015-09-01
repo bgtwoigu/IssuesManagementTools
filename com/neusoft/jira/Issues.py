@@ -264,14 +264,15 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempStr = ''.join(row[SUMMARY_COLUMN_NO].upper().split(']')[:5])
+        tempSubList = row[SUMMARY_COLUMN_NO].upper().split(']')[:5]
 
         try:
             for key in self.__teamId.keys():
                 for r in self.__teamId[key]:
-                    if -1 != tempStr.find(r.upper()):
-                        row.append(key)
-                        raise FoundException()
+                    for sl in tempSubList:
+                        if r.upper() == sl.strip()[1:].lstrip():
+                            row.append(key)
+                            raise FoundException()
         except FoundException:
             self.__status[rowNo][TEAM_COLUMN_NO] = CHANGE_STATUS
         else:
@@ -285,14 +286,15 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempStr = ''.join(row[SUMMARY_COLUMN_NO].upper().split(']')[:5])
+        tempSubList = row[SUMMARY_COLUMN_NO].upper().split(']')[:5]
 
         try:
             for key in self.__moduleId.keys():
                 for r in self.__moduleId[key]:
-                    if -1 != tempStr.find(r.upper()):
-                        row.append(r)
-                        raise FoundException()
+                    for sl in tempSubList:
+                        if r.upper() == sl.strip()[1:].lstrip():
+                            row.append(r)
+                            raise FoundException()
         except FoundException:
             self.__status[rowNo][MODULE_COLUMN_NO] = CHANGE_STATUS
         else:
@@ -306,19 +308,19 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempStr = ''.join(row[SUMMARY_COLUMN_NO].upper().split(']')[:5])
+        tempSubList = row[SUMMARY_COLUMN_NO].upper().split(']')[:5]
 
         try:
             for key in self.__etOrByCaseId.keys():
                 for r in self.__etOrByCaseId[key]:
-                    if -1 != tempStr.find(r.upper()):
-                        row.append(r)
-                        raise FoundException()
+                    for sl in tempSubList:
+                        if r.upper() == sl.strip()[1:].lstrip():
+                            row.append(r)
+                            raise FoundException()
         except FoundException:
             self.__status[rowNo][ET_OR_BY_CASE_COLUMN_NO] = CHANGE_STATUS
         else:
-            row.append(ERROR)
-            self.__status[rowNo][ET_OR_BY_CASE_COLUMN_NO] = ERROR_STATUS
+            row.append(BLANK)
 
     def __appendReporterContent(self, row, rowNo):
         '''
@@ -327,10 +329,13 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
+        tempStr = ''.join(self.__descriptionColumn[rowNo].upper().split("REPORTER:")[1])
+        tempStr = ''.join(tempStr.split("\n")[:1]).strip()
+
         try:
             for key in self.__reporterId.keys():
                 for r in self.__reporterId[key]:
-                    if row[REPORTER_1_COLUMN_NO].upper() == r.upper():
+                    if tempStr == r.upper():
                         row.append(key)
                         raise FoundException()
         except FoundException:
@@ -346,14 +351,15 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempStr = ''.join(row[SUMMARY_COLUMN_NO].upper().split(']')[:5])
+        tempSubList = row[SUMMARY_COLUMN_NO].upper().split(']')[:5]
 
         try:
             for key in self.__productId.keys():
                 for r in self.__productId[key]:
-                    if -1 != tempStr.find(r.upper()):
-                        row.append(r)
-                        raise FoundException()
+                    for sl in tempSubList:
+                        if "[" == sl.strip()[0] and -1 != sl.find(r.upper()):
+                            row.append(r)
+                            raise FoundException()
         except FoundException:
             self.__status[rowNo][PRODUCT_COLUMN_NO] = CHANGE_STATUS
         else:
@@ -403,8 +409,11 @@ class Issues(object):
         except FoundException:
             self.__status[rowNo][REPRODUCED_COLUMN_NO] = CHANGE_STATUS
         else:
-            row.append(ERROR)
-            self.__status[rowNo][REPRODUCED_COLUMN_NO] = ERROR_STATUS
+            if "" == tempStr.lower():
+                row.append(BLANK)
+            else:
+                row.append(tempStr.lower())
+                self.__status[rowNo][REPRODUCED_COLUMN_NO] = ERROR_STATUS
 
     def __updateAssigneeContent(self, row, rowNo):
         '''

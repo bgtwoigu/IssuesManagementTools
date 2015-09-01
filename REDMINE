@@ -1,0 +1,28 @@
+Issues Management Tools
+
+=============================
+VERSION: 0.0.1
+AUTHOR: ZHAOSHENG LIU
+=============================
+
+1、插件安装
+    ①本工具運行依賴於xlwt、xlrd和python工具。
+        i、Python
+            本工具是由python語言實現，所以需要安裝python 2.x，該插件的下載安裝請參照python官網。P.S.python的windows安装包也可以从./Tools文件夹下取得。
+        ii、xlrd安裝
+            （1）将xlrd-0.9.4.tar.gz文件解壓縮。
+            （2）進入解壓後的文件夾xlrd-0.9.4。
+            （3）運行以下命令安裝。
+                $python setup.py install (注意Ubuntu系統安裝時有可能需要Root權限安裝)
+        iii、xlwt安装
+            （1）将xlwt-1.0.0.tar.gz文件解壓縮。
+            （2）進入解壓後的文件夾xlwt-1.0.0。
+            （3）運行以下命令安裝。
+                $python setup.py install (注意Ubuntu系統安裝時有可能需要Root權限安裝)
+
+2、工具運行
+    ①運行命令
+        $ python /IssuesManagementTools/Main.py
+
+3、導出結果查看
+    導入結果請查看/Results/ExportResults.csv

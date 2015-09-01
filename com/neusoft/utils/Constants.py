@@ -32,7 +32,7 @@ ADDITIONAL_TITLE = ["Team", "Module", "ET/by case", "Reporter", "Product", "PL S
 
 COLUMN_SUM = 20
 
-ERROR = "N/A"
+ERROR = "ERROR"
 BLANK = ""
 
 CHANGE_STATUS = "C"
