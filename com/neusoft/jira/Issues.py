@@ -7,7 +7,9 @@ Created on Aug 25, 2015
 @author: liuzhsh
 '''
 
-import re
+from datetime import datetime
+from re import split
+from string import atoi
 
 from com.neusoft.utils.Constants import *
 from com.neusoft.utils.Tools import Tools
@@ -48,6 +50,9 @@ class Issues(object):
 
         self.__reproducedId = {}
         self.__getReproducedId()
+
+        self.__createdId = {}
+        self.__getCreatedId()
 
         self.__prismSheet = {}
         self.__readCsvFiles()
@@ -189,6 +194,37 @@ class Issues(object):
                 print key, "::", self.__reproducedId[key]
             print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
+    def __getCreatedId(self):
+        '''
+        get the begin and end time of the created time.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        self.__csvFile = CsvFile()
+        tempList = self.__csvFile.read(CREATED_ID_FILE)
+
+        try:
+            for row in tempList:
+                if not row[VALUE].strip():
+                    self.__createdId[row[KEY]] = datetime(atoi(TIME_DICT[row[KEY]][YEAR]), atoi(TIME_DICT[row[KEY]][MONTH]), atoi(TIME_DICT[row[KEY]][DAY]), atoi(TIME_DICT[row[KEY]][HOUR]), atoi(TIME_DICT[row[KEY]][MINUTE]), atoi(TIME_DICT[row[KEY]][SECOND]))
+                else:
+                    tempSubList = split("[-/]", row[VALUE])
+                    self.__createdId[row[KEY]] = datetime(atoi(tempSubList[YEAR]), atoi(tempSubList[MONTH]), atoi(tempSubList[DAY]), atoi(TIME_DICT[row[KEY]][HOUR]), atoi(TIME_DICT[row[KEY]][MINUTE]), atoi(TIME_DICT[row[KEY]][SECOND]))
+        except (ValueError), e:
+            print "[ERROR] %s" % e
+            exit()
+
+        if self.__createdId["BEGIN"] >= self.__createdId["END"]:
+            print "[ERROR] THE BEGIN TIME CAN'T BE LATER THAN TEH END TIME."
+            exit()
+
+        if DEBUG:
+            print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            for key in self.__createdId.keys():
+                print key, "::", self.__createdId[key]
+            print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
     def __readCsvFiles(self):
         '''
         get the useful csv file content.
@@ -213,6 +249,18 @@ class Issues(object):
                     print subKey, "::", self.__prismSheet[key][subKey]
                 print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
+    def __canBeAppend(self, time):
+        '''
+        determine whether the created time meets the requirements
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        if time >= self.__createdId["BEGIN"] and time <= self.__createdId["END"]:
+            return True
+        else:
+            return False
+
     def __readXlsFiles(self):
         '''
         get the xls file content.
@@ -223,13 +271,19 @@ class Issues(object):
         self.__xlsFile = XlsFile()
         tempList = self.__xlsFile.read(self.__jiraFileName, ZERO)
 
-        self.__exportSheet = [[] for _ in range(len(tempList))]
-        for row in range(len(tempList)):
-            tempSubList = []
-            for column in range(len(tempList[row]) - DELETE_COLUMN_NUM):
-                tempSubList.append(tempList[row][column])
-            self.__exportSheet[row] = tempSubList
-            self.__descriptionColumn.append(tempList[row][-1])
+        tempSubList = []
+        for column in range(len(tempList[KEY]) - DELETE_COLUMN_NUM):
+            tempSubList.append(tempList[KEY][column])
+        self.__exportSheet.append(tempSubList)
+        self.__descriptionColumn.append(tempList[KEY][-1])
+
+        for row in range(VALUE, len(tempList)):
+            if self.__canBeAppend(tempList[row][CREATED_TIME_COLUMN_NO]):
+                tempSubList = []
+                for column in range(len(tempList[row]) - DELETE_COLUMN_NUM):
+                    tempSubList.append(tempList[row][column])
+                self.__exportSheet.append(tempSubList)
+                self.__descriptionColumn.append(tempList[row][-1])
 
         self.__status = [[""] * COLUMN_SUM for _ in range(len(tempList))]
 
@@ -442,8 +496,6 @@ class Issues(object):
         elif "Open" == row[JIRA_STATUS_COLUMN_NO] and row[CR_ID_COLUMN_NO].isdigit() and not self.__prismSheet.has_key(row[CR_ID_COLUMN_NO]):
             row[COMPONENTS_COLUMN_NO] = ERROR
             self.__status[rowNo][COMPONENTS_COLUMN_NO] = ERROR_STATUS
-        else:
-            row[COMPONENTS_COLUMN_NO] = BLANK
 
     def __createSheet(self):
         '''
