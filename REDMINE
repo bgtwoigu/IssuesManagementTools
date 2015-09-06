@@ -1,7 +1,7 @@
 Issues Management Tools
 
 =============================
-VERSION: 0.0.2
+VERSION: 0.0.3
 AUTHOR: ZHAOSHENG LIU
 =============================
 
@@ -20,7 +20,10 @@ AUTHOR: ZHAOSHENG LIU
             （3）運行以下命令安裝。
                 $python setup.py install (注意Ubuntu系統安裝時有可能需要Root權限安裝)
 
-2、工具運行
+2、導入文件存放目錄
+    導入文件存放在/Sources目錄
+
+3、工具運行
     ①入力文件準備
     i、從Jira導出SearchRequest-73122.xls文件，並將文件中的超鏈接刪除。注意：文件中每一列的順序必須相同。
     ii、從Prism導出PrismSearchResults.csv文件。
@@ -28,5 +31,5 @@ AUTHOR: ZHAOSHENG LIU
     ②運行命令
         $ python /IssuesManagementTools/Main.py
 
-3、導出結果查看
+4、導出結果查看
     導入結果請查看/Results/ExportResults.csv

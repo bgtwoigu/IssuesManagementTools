@@ -20,6 +20,7 @@ REPORTER_ID_FILE = "./Configuration/reporter_id.csv"
 PRODUCT_ID_FILE = "./Configuration/product_id.csv"
 REPRODUCED_ID_FILE = "./Configuration/reproduced_id.csv"
 CREATED_ID_FILE = "./Configuration/created_id.csv"
+JIRA_STATUS_ID_FILE = "./Configuration/jira_status_id.csv"
 JIRA_SOURCES_FILE = "./Sources/SearchRequest-73122.xls"
 PRISM_SOURCES_FILE = "./Sources/PrismSearchResults.csv"
 RESULTS_FILE = "./Results/ExportResults.xls"
@@ -29,9 +30,9 @@ VALUE = 1
 
 DELETE_COLUMN_NUM = 1
 
-ADDITIONAL_TITLE = ["Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "Modify"]
+EXPORT_SHEET_TITLE = ["Issue Type", "Key", "Summary", "Assignee", "Reporter", "JIRA Status", "Created", "Updated", "RCA", "CRID", "Issue Close Reason", "Subsystem", "Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "TagNames", "Modify"]
 
-COLUMN_SUM = 20
+COLUMN_SUM = 21
 
 ERROR = "ERROR"
 BLANK = ""
@@ -54,10 +55,12 @@ REPORTER_2_COLUMN_NO = 15
 PRODUCT_COLUMN_NO = 16
 PL_STATUS_COLUMN_NO = 17
 REPRODUCED_COLUMN_NO = 18
+TAG_NAMES_COLUMN_NO = 19
 
 PL_STATUS = "PLStatus"
 CR_ASSIGNEE_USER_NAME = "CRAssigneeUserName"
 SUB_SYSTEM = "Subsystem"
+TAG_NAMES = "TagNames"
 
 YEAR = 0
 MONTH = 1
@@ -66,3 +69,8 @@ HOUR = 3
 MINUTE = 4
 SECOND = 5
 TIME_DICT = {'BEGIN' : ('1900', '01', '01', '00', '00', '00'), 'END': ('2900', '12', '31', '23', '59', '59')}
+
+JIRA_OPEN_STATUS = "Open"
+
+BEGIN_TIME = "BEGIN"
+END_TIME = "END"
