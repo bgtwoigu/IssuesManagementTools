@@ -241,7 +241,7 @@ class Issues(object):
         for row in tempList:
             self.__jiraStatusId[row[KEY]] = row[VALUE]
 
-        self.__jiraStatusId[JIRA_OPEN_STATUS] = self.__jiraOpenStatusOperate
+        self.__jiraStatusId[JIRA_OPEN_STATUS] = self.__getPrismContent
 
         if DEBUG:
             print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -427,9 +427,9 @@ class Issues(object):
             row.append(ERROR)
             self.__status[rowNo][PRODUCT_COLUMN_NO] = ERROR_STATUS
 
-    def __jiraOpenStatusOperate(self, row, rowNo, jiraColumnNo, prismColumnNo):
+    def __getPrismContent(self, row, rowNo, jiraColumnNo, prismColumnNo):
         '''
-        operate jira open status.
+        get prism content.
         '''
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
@@ -440,7 +440,7 @@ class Issues(object):
         elif row[CR_ID_COLUMN_NO].isdigit() and not self.__prismSheet.has_key(row[CR_ID_COLUMN_NO]):
             self.__status[rowNo][jiraColumnNo] = ERROR_STATUS
             return ERROR
-        elif not row[CR_ID_COLUMN_NO].isdigit():
+        elif not row[CR_ID_COLUMN_NO].isdigit() and "" != row[CR_ID_COLUMN_NO]:
             self.__status[rowNo][jiraColumnNo] = ERROR_STATUS
             return ERROR
         else:
@@ -490,8 +490,7 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        if JIRA_OPEN_STATUS == row[JIRA_STATUS_COLUMN_NO]:
-            row.append(self.__jiraStatusId[row[JIRA_STATUS_COLUMN_NO]](row, rowNo, TAG_NAMES_COLUMN_NO, TAG_NAMES))
+        row.append(self.__getPrismContent(row, rowNo, TAG_NAMES_COLUMN_NO, TAG_NAMES))
 
     def __appendModifyContent(self, row, rowNo):
         '''
