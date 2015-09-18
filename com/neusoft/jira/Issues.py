@@ -376,7 +376,7 @@ class Issues(object):
                 for r in self.__etOrByCaseId[key]:
                     for sl in tempSubList:
                         if r.upper() == sl.strip()[1:].lstrip():
-                            row.append(r)
+                            row.append(key)
                             raise FoundException()
         except FoundException:
             self.__status[rowNo][ET_OR_BY_CASE_COLUMN_NO] = CHANGE_STATUS
