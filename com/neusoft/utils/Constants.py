@@ -21,6 +21,7 @@ PRODUCT_ID_FILE = "./Configuration/product_id.csv"
 REPRODUCED_ID_FILE = "./Configuration/reproduced_id.csv"
 CREATED_ID_FILE = "./Configuration/created_id.csv"
 JIRA_STATUS_ID_FILE = "./Configuration/jira_status_id.csv"
+PL_STATUS_ID_FILE = "./Configuration/pl_status_id.csv"
 JIRA_SOURCES_FILE = "./Sources/SearchRequest-73122.xls"
 PRISM_SOURCES_FILE = "./Sources/PrismSearchResults.csv"
 RESULTS_FILE = "./Results/ExportResults.xls"
@@ -30,7 +31,7 @@ VALUE = 1
 
 DELETE_COLUMN_NUM = 1
 
-EXPORT_SHEET_TITLE = ["Issue Type", "Key", "Summary", "Assignee", "Reporter", "JIRA Status", "Created", "Updated", "RCA", "CRID", "Issue Close Reason", "Subsystem", "Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "TagNames", "Modify"]
+EXPORT_SHEET_TITLE = ["Issue Type", "Key", "Summary", "Assignee", "Reporter", "JIRA Status", "Created", "Updated", "RCA", "CRID", "Issue Close Reason", "Subsystem", "Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "TagNames", "TestCaseNumber"]
 
 COLUMN_SUM = 21
 
@@ -39,6 +40,8 @@ BLANK = ""
 
 CHANGE_STATUS = "C"
 ERROR_STATUS = "E"
+BLACK_STATUS = "B"
+HIGHLIGHT_STATUS = "H"
 
 SUMMARY_COLUMN_NO = 2
 ASSIGNEE_COLUMN_NO = 3
@@ -56,11 +59,18 @@ PRODUCT_COLUMN_NO = 16
 PL_STATUS_COLUMN_NO = 17
 REPRODUCED_COLUMN_NO = 18
 TAG_NAMES_COLUMN_NO = 19
+TEST_CASE_NUMBER_COLUMN_NO = 20
+
+PRISM_PL_STATUS_COLUMN_NO = 1
 
 PL_STATUS = "PLStatus"
 CR_ASSIGNEE_USER_NAME = "CRAssigneeUserName"
 SUB_SYSTEM = "Subsystem"
 TAG_NAMES = "TagNames"
+TEST_CASE_NUMBER = "TestCaseNumber"
+
+TEST_CASE_NUMBER_IDENTIFIER = "EXPLORATORY_TESTING"
+TAG_NAMES_IDENTIFIER = ("MON", "POT")
 
 YEAR = 0
 MONTH = 1

@@ -31,6 +31,7 @@ class XlsFile(object):
         self.__titleStyle = easyxf('pattern: pattern solid, fore_colour gray25; font: bold on;');
         self.__changedStyle = easyxf('pattern: pattern solid, fore_colour green');
         self.__errorStyle = easyxf('pattern: pattern solid, fore_colour red;');
+        self.__highlightStyle = easyxf('pattern: pattern solid, fore_colour yellow;');
 
     def read(self, path=JIRA_SOURCES_FILE, index=ZERO):
         '''
@@ -69,6 +70,8 @@ class XlsFile(object):
             self.__worksheet.write(rowNo, columnNo, content, self.__changedStyle)
         elif ERROR_STATUS == status:
             self.__worksheet.write(rowNo, columnNo, content, self.__errorStyle)
+        elif HIGHLIGHT_STATUS == status:
+            self.__worksheet.write(rowNo, columnNo, content, self.__highlightStyle)
         else:
             self.__worksheet.write(rowNo, columnNo, content)
 
