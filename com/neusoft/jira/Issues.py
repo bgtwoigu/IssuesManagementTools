@@ -346,6 +346,17 @@ class Issues(object):
                 print d
                 print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
+    def __appendCrSeverityContent(self, row, rowNo):
+        '''
+        append the content to the CR Severity column.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        tempCrSeverityStr, self.__status[rowNo][CR_SEVERITY_COLUMN_NO] = self.__getPrismContent(row, SEVERITY)
+
+        row.append(tempCrSeverityStr)
+
     def __appendTeamContent(self, row, rowNo):
         '''
         append the content to the Team column.
@@ -470,8 +481,6 @@ class Issues(object):
             return self.__prismSheet[row[CR_ID_COLUMN_NO]][prismColumnNo], CHANGE_STATUS
         elif row[CR_ID_COLUMN_NO].isdigit() and not self.__prismSheet.has_key(row[CR_ID_COLUMN_NO]):
             return ERROR, ERROR_STATUS
-        elif not row[CR_ID_COLUMN_NO].isdigit() and "" != row[CR_ID_COLUMN_NO]:
-            return ERROR, ERROR_STATUS
         else:
             return BLANK, BLACK_STATUS
 
@@ -566,6 +575,18 @@ class Issues(object):
         if JIRA_OPEN_STATUS == row[JIRA_STATUS_COLUMN_NO]:
             row[COMPONENTS_COLUMN_NO], self.__status[rowNo][COMPONENTS_COLUMN_NO] = self.__jiraStatusId[row[JIRA_STATUS_COLUMN_NO]](row, SUB_SYSTEM)
 
+    def __updateIssuePriorityInPrismContent(self, row, rowNo):
+        '''
+        update the content of the Issue Priority in Prism column.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        tempIssuePriorityInPrismStr, self.__status[rowNo][ISSUE_PRIORITY_IN_PRISM_COLUMN_NO] = self.__getPrismContent(row, CR_PRIORITY)
+
+        if BLANK != tempIssuePriorityInPrismStr:
+            row[ISSUE_PRIORITY_IN_PRISM_COLUMN_NO] = tempIssuePriorityInPrismStr
+
     def __createSheet(self):
         '''
         create a final sheet for writing.
@@ -574,6 +595,7 @@ class Issues(object):
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
         for row in range(VALUE, len(self.__exportSheet)):
+            self.__appendCrSeverityContent(self.__exportSheet[row], row)
             self.__appendTeamContent(self.__exportSheet[row], row)
             self.__appendModuleContent(self.__exportSheet[row], row)
             self.__appendEtOrByCaseContent(self.__exportSheet[row], row)
@@ -585,6 +607,7 @@ class Issues(object):
             self.__appendTestCaseNumberContent(self.__exportSheet[row], row)
             self.__updateAssigneeContent(self.__exportSheet[row], row)
             self.__updateComponentsContent(self.__exportSheet[row], row)
+            self.__updateIssuePriorityInPrismContent(self.__exportSheet[row], row)
 
     def __writeXlsFiles(self):
         '''

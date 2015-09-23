@@ -31,9 +31,9 @@ VALUE = 1
 
 DELETE_COLUMN_NUM = 1
 
-EXPORT_SHEET_TITLE = ["Issue Type", "Key", "Summary", "Assignee", "Reporter", "JIRA Status", "Created", "Updated", "RCA", "CRID", "Issue Close Reason", "Subsystem", "Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "TagNames", "TestCaseNumber"]
+EXPORT_SHEET_TITLE = ["Issue Type", "Key", "Summary", "Assignee", "Reporter", "JIRA Status", "Created", "Updated", "RCA", "CRID", "Issue Close Reason", "Subsystem", "Issue Priority in Prism", "JIRA Severity", "CR Severity", "Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "TagNames", "TestCaseNumber"]
 
-COLUMN_SUM = 21
+COLUMN_SUM = 24
 
 ERROR = "ERROR"
 BLANK = ""
@@ -51,15 +51,18 @@ CREATED_TIME_COLUMN_NO = 6
 UPDATED_TIME_COLUMN_NO = 7
 CR_ID_COLUMN_NO = 9
 COMPONENTS_COLUMN_NO = 11
-TEAM_COLUMN_NO = 12
-MODULE_COLUMN_NO = 13
-ET_OR_BY_CASE_COLUMN_NO = 14
-REPORTER_2_COLUMN_NO = 15
-PRODUCT_COLUMN_NO = 16
-PL_STATUS_COLUMN_NO = 17
-REPRODUCED_COLUMN_NO = 18
-TAG_NAMES_COLUMN_NO = 19
-TEST_CASE_NUMBER_COLUMN_NO = 20
+ISSUE_PRIORITY_IN_PRISM_COLUMN_NO = 12
+JIRA_SEVERITY_COLUMN_NO = 13
+CR_SEVERITY_COLUMN_NO = 14
+TEAM_COLUMN_NO = 15
+MODULE_COLUMN_NO = 16
+ET_OR_BY_CASE_COLUMN_NO = 17
+REPORTER_2_COLUMN_NO = 18
+PRODUCT_COLUMN_NO = 19
+PL_STATUS_COLUMN_NO = 20
+REPRODUCED_COLUMN_NO = 21
+TAG_NAMES_COLUMN_NO = 22
+TEST_CASE_NUMBER_COLUMN_NO = 23
 
 PRISM_PL_STATUS_COLUMN_NO = 1
 
@@ -68,6 +71,8 @@ CR_ASSIGNEE_USER_NAME = "CRAssigneeUserName"
 SUB_SYSTEM = "Subsystem"
 TAG_NAMES = "TagNames"
 TEST_CASE_NUMBER = "TestCaseNumber"
+SEVERITY = "Severity"
+CR_PRIORITY = "CRPriority"
 
 TEST_CASE_NUMBER_IDENTIFIER = "EXPLORATORY_TESTING"
 TAG_NAMES_IDENTIFIER = ("MON", "POT")

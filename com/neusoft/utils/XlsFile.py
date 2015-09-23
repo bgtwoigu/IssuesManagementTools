@@ -49,7 +49,7 @@ class XlsFile(object):
                 for column in range(self.__worksheet.ncols):
                     if column in (CREATED_TIME_COLUMN_NO, UPDATED_TIME_COLUMN_NO) and type(self.__worksheet.cell_value(row, column)) is float:
                         tempList.append(xldate.xldate_as_datetime(self.__worksheet.cell(row, column).value, 0))
-                    elif column == CR_ID_COLUMN_NO and type(self.__worksheet.cell_value(row, column)) is float:
+                    elif column in (CR_ID_COLUMN_NO, ISSUE_PRIORITY_IN_PRISM_COLUMN_NO) and type(self.__worksheet.cell_value(row, column)) is float:
                         tempList.append(str(int(self.__worksheet.cell_value(row, column))))
                     else:
                         tempList.append(self.__worksheet.cell_value(row, column).encode("utf-8"))
