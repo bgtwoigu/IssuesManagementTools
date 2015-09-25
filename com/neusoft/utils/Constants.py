@@ -11,60 +11,52 @@ DEBUG = False
 
 class FoundException(Exception): pass
 
-ZERO = 0
-
-TEAM_ID_FILE = "./Configuration/team_id.csv"
-MODULE_ID_FILE = "./Configuration/module_id.csv"
-ET_OR_BY_CASE_ID_FILE = "./Configuration/et_or_by_case.csv"
-REPORTER_ID_FILE = "./Configuration/reporter_id.csv"
-PRODUCT_ID_FILE = "./Configuration/product_id.csv"
-REPRODUCED_ID_FILE = "./Configuration/reproduced_id.csv"
 CREATED_ID_FILE = "./Configuration/created_id.csv"
+ET_OR_BY_CASE_ID_FILE = "./Configuration/et_or_by_case.csv"
+EXPORT_RESULTS_TITLE_ID_FILE = "./Configuration/export_results_title_id.csv"
 JIRA_STATUS_ID_FILE = "./Configuration/jira_status_id.csv"
+MODULE_ID_FILE = "./Configuration/module_id.csv"
 PL_STATUS_ID_FILE = "./Configuration/pl_status_id.csv"
+PRODUCT_ID_FILE = "./Configuration/product_id.csv"
+REPORTER_ID_FILE = "./Configuration/reporter_id.csv"
+REPRODUCED_ID_FILE = "./Configuration/reproduced_id.csv"
+TEAM_ID_FILE = "./Configuration/team_id.csv"
+
 JIRA_SOURCES_FILE = "./Sources/SearchRequest-73122.xls"
 PRISM_SOURCES_FILE = "./Sources/PrismSearchResults.csv"
+
 RESULTS_FILE = "./Results/ExportResults.xls"
+
+XLS_SHEET_INDEX = 0
+ZERO = 0
 
 KEY = 0
 VALUE = 1
 
-DELETE_COLUMN_NUM = 1
+CONTENT = 0
+STATUS = 1
 
-EXPORT_SHEET_TITLE = ["Issue Type", "Key", "Summary", "Assignee", "Reporter", "JIRA Status", "Created", "Updated", "RCA", "CRID", "Issue Close Reason", "Subsystem", "Issue Priority in Prism", "JIRA Severity", "CR Severity", "Team", "Module", "ET/by case", "Reporter", "Product", "PL Status", "Reproduced on 8952", "TagNames", "TestCaseNumber"]
+JIRA_ISSUE_TYPE = "Issue Type"
+JIRA_KEY = "Key"
+JIRA_SUMMARY = "Summary"
+JIRA_ASSIGNEE = "Assignee"
+JIRA_REPORTER = "Reporter"
+JIRA_STATUS = "Status"
+JIRA_CREATED = "Created"
+JIRA_UPDATED = "Updated"
+JIRA_RCA = "RCA"
+JIRA_CR_ID = "CRID"
+JIRA_ISSUE_CLOSE_REASON = "Issue Close Reason"
+JIRA_COMPONENTS = "Component/s"
+JIRA_ISSUE_PRIORITY_IN_PRISM = "Issue Priority in Prism"
+JIRA_SEVERITY = "Severity"
+JIRA_DESCRIPTION = "Description"
 
-COLUMN_SUM = 24
-
-ERROR = "ERROR"
-BLANK = ""
-
+TITLE_STATUS = "T"
 CHANGE_STATUS = "C"
 ERROR_STATUS = "E"
-BLACK_STATUS = "B"
+WHITE_STATUS = "W"
 HIGHLIGHT_STATUS = "H"
-
-SUMMARY_COLUMN_NO = 2
-ASSIGNEE_COLUMN_NO = 3
-REPORTER_1_COLUMN_NO = 4
-JIRA_STATUS_COLUMN_NO = 5
-CREATED_TIME_COLUMN_NO = 6
-UPDATED_TIME_COLUMN_NO = 7
-CR_ID_COLUMN_NO = 9
-COMPONENTS_COLUMN_NO = 11
-ISSUE_PRIORITY_IN_PRISM_COLUMN_NO = 12
-JIRA_SEVERITY_COLUMN_NO = 13
-CR_SEVERITY_COLUMN_NO = 14
-TEAM_COLUMN_NO = 15
-MODULE_COLUMN_NO = 16
-ET_OR_BY_CASE_COLUMN_NO = 17
-REPORTER_2_COLUMN_NO = 18
-PRODUCT_COLUMN_NO = 19
-PL_STATUS_COLUMN_NO = 20
-REPRODUCED_COLUMN_NO = 21
-TAG_NAMES_COLUMN_NO = 22
-TEST_CASE_NUMBER_COLUMN_NO = 23
-
-PRISM_PL_STATUS_COLUMN_NO = 1
 
 PL_STATUS = "PLStatus"
 CR_ASSIGNEE_USER_NAME = "CRAssigneeUserName"
@@ -73,6 +65,9 @@ TAG_NAMES = "TagNames"
 TEST_CASE_NUMBER = "TestCaseNumber"
 SEVERITY = "Severity"
 CR_PRIORITY = "CRPriority"
+
+ERROR = "ERROR"
+BLANK = ""
 
 TEST_CASE_NUMBER_IDENTIFIER = "EXPLORATORY_TESTING"
 TAG_NAMES_IDENTIFIER = ("MON", "POT")
@@ -89,3 +84,11 @@ JIRA_OPEN_STATUS = "Open"
 
 BEGIN_TIME = "BEGIN"
 END_TIME = "END"
+
+EMPTY_TYPE = 0
+TEXT_TYEP = 1
+NUMBER_TYPE = 2
+DATE_TYPE = 3
+BOOLEAN_TYPE = 4
+ERROR_TYPE = 5
+BLANK_TYPE = 6

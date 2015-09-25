@@ -9,7 +9,6 @@ Created on Aug 25, 2015
 
 from xlrd import open_workbook, xldate, XLRDError
 from xlwt import easyxf, Workbook
-from datetime import datetime
 
 from com.neusoft.utils.Tools import Tools
 from com.neusoft.utils.Constants import *
@@ -28,10 +27,81 @@ class XlsFile(object):
         self.__sheet = []
         self.__workbook = None
         self.__worksheet = None
-        self.__titleStyle = easyxf('pattern: pattern solid, fore_colour gray25; font: bold on;');
-        self.__changedStyle = easyxf('pattern: pattern solid, fore_colour green');
-        self.__errorStyle = easyxf('pattern: pattern solid, fore_colour red;');
-        self.__highlightStyle = easyxf('pattern: pattern solid, fore_colour yellow;');
+        self.__styleOperator = {TITLE_STATUS : easyxf('pattern: pattern solid, fore_colour gray25; font: bold on;'),
+                                CHANGE_STATUS : easyxf('pattern: pattern solid, fore_colour green'),
+                                ERROR_STATUS : easyxf('pattern: pattern solid, fore_colour red;'),
+                                HIGHLIGHT_STATUS : easyxf('pattern: pattern solid, fore_colour yellow;'),
+                                WHITE_STATUS : easyxf('')}
+        self.__typeOperator = {EMPTY_TYPE : self.__getEmptyType,
+                               TEXT_TYEP : self.__getTextType,
+                               NUMBER_TYPE : self.__getNumberType,
+                               DATE_TYPE : self.__getDateType,
+                               BOOLEAN_TYPE : self.__getBooleanType,
+                               ERROR_TYPE : self.__getErrorType,
+                               BLANK_TYPE : self.__getBlankType}
+
+    def __getEmptyType(self, rowNo, columnNo):
+        '''
+        return the empty type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return self.__worksheet.cell_value(rowNo, columnNo).encode("utf-8")
+
+    def __getTextType(self, rowNo, columnNo):
+        '''
+        return the text type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return self.__worksheet.cell_value(rowNo, columnNo).encode("utf-8")
+
+    def __getNumberType(self, rowNo, columnNo):
+        '''
+        return the number type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return str(int(self.__worksheet.cell_value(rowNo, columnNo)))
+
+    def __getDateType(self, rowNo, columnNo):
+        '''
+        read the date type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return xldate.xldate_as_datetime(self.__worksheet.cell(rowNo, columnNo).value, 0)
+
+    def __getBooleanType(self, rowNo, columnNo):
+        '''
+        return the boolean type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return self.__worksheet.cell_value(rowNo, columnNo).encode("utf-8")
+
+    def __getErrorType(self, rowNo, columnNo):
+        '''
+        return the error type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return self.__worksheet.cell_value(rowNo, columnNo).encode("utf-8")
+
+    def __getBlankType(self, rowNo, columnNo):
+        '''
+        return the blank type content.
+        '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
+        return self.__worksheet.cell_value(rowNo, columnNo).encode("utf-8")
 
     def read(self, path=JIRA_SOURCES_FILE, index=ZERO):
         '''
@@ -44,38 +114,17 @@ class XlsFile(object):
             self.__workbook = open_workbook(path)
             self.__worksheet = self.__workbook.sheet_by_index(index)
 
-            for row in range(self.__worksheet.nrows):
+            for rowNo in range(self.__worksheet.nrows):
                 tempList = []
-                for column in range(self.__worksheet.ncols):
-                    if column in (CREATED_TIME_COLUMN_NO, UPDATED_TIME_COLUMN_NO) and type(self.__worksheet.cell_value(row, column)) is float:
-                        tempList.append(xldate.xldate_as_datetime(self.__worksheet.cell(row, column).value, 0))
-                    elif column in (CR_ID_COLUMN_NO, ISSUE_PRIORITY_IN_PRISM_COLUMN_NO) and type(self.__worksheet.cell_value(row, column)) is float:
-                        tempList.append(str(int(self.__worksheet.cell_value(row, column))))
-                    else:
-                        tempList.append(self.__worksheet.cell_value(row, column).encode("utf-8"))
+                for columnNo in range(self.__worksheet.ncols):
+                    tempList.append(self.__typeOperator[self.__worksheet.cell_type(rowNo, columnNo)](rowNo, columnNo))
                 self.__sheet.append(tempList)
             return self.__sheet
         except (IOError, TypeError, XLRDError), e:
             print "[ERROR] %s" % e
             exit()
 
-    def __write(self, rowNo, columnNo, content, status):
-        '''
-        write date in the current cell.
-        '''
-        if DEBUG:
-            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
-
-        if CHANGE_STATUS == status:
-            self.__worksheet.write(rowNo, columnNo, content, self.__changedStyle)
-        elif ERROR_STATUS == status:
-            self.__worksheet.write(rowNo, columnNo, content, self.__errorStyle)
-        elif HIGHLIGHT_STATUS == status:
-            self.__worksheet.write(rowNo, columnNo, content, self.__highlightStyle)
-        else:
-            self.__worksheet.write(rowNo, columnNo, content)
-
-    def write(self, sheet="", status="", path=RESULTS_FILE):
+    def write(self, sheet="", path = RESULTS_FILE):
         '''
         write content to the xls file.
         '''
@@ -85,14 +134,8 @@ class XlsFile(object):
         self.__workbook = Workbook(encoding = 'utf-8')
         self.__worksheet = self.__workbook.add_sheet('Bug List')
 
-        for column in range(len(sheet[KEY])):
-            self.__worksheet.write(KEY, column, str(sheet[KEY][column]), self.__titleStyle)
-
-        for row in range(VALUE, len(sheet)):
-            for column in range(len(sheet[row])):
-                if type(sheet[row][column]) is datetime:
-                    self.__write(row, column, str(sheet[row][column]), status[row][column])
-                else:
-                    self.__write(row, column, sheet[row][column], status[row][column])
+        for rowNo in range(len(sheet)):
+            for columnNo in range(len(sheet[rowNo])):
+                self.__worksheet.write(rowNo, columnNo, str(sheet[rowNo][columnNo][CONTENT]), self.__styleOperator[sheet[rowNo][columnNo][VALUE]])
 
         self.__workbook.save(path)

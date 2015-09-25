@@ -9,7 +9,7 @@ Created on Aug 25, 2015
 
 import csv
 
-from com.neusoft.utils.Constants import DEBUG
+from com.neusoft.utils.Constants import DEBUG, PRISM_SOURCES_FILE
 from com.neusoft.utils.Tools import Tools
 
 
@@ -24,7 +24,7 @@ class CsvFile(object):
         self.__sheet = []
         self.__tools = Tools()
 
-    def read(self, path=""):
+    def read(self, path = PRISM_SOURCES_FILE):
         '''
         read the csv file.
         '''
