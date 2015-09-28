@@ -534,7 +534,7 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:5]
+        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:-1]
 
         for key in self.__teamId.keys():
             for r in self.__teamId[key]:
@@ -552,7 +552,7 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:5]
+        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:-1]
 
         for key in self.__moduleId.keys():
             for r in self.__moduleId[key]:
@@ -570,7 +570,7 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:5]
+        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:-1]
 
         for key in self.__etOrByCaseId.keys():
             for r in self.__etOrByCaseId[key]:
@@ -610,7 +610,7 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:5]
+        tempSubList = importRow[JIRA_SUMMARY].upper().split(']')[:-1]
 
         for key in self.__productId.keys():
             for r in self.__productId[key]:
@@ -640,18 +640,16 @@ class Issues(object):
         if DEBUG:
             print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
 
-        tempStr = ''.join(importRow[JIRA_DESCRIPTION].upper().split("[ADDITIONAL")[1:])
+        for decollator in ('[ADDITIONAL', '[REF PHONE INFO'):
+            tempStr = ''.join(importRow[JIRA_DESCRIPTION].upper().split(decollator)[1:])
 
-        for key in self.__reproducedId.keys():
-            for r in self.__reproducedId[key]:
-                if tempStr.find(r.upper()) >= 0:
-                    exportRow.append([key, CHANGE_STATUS])
-                    return
+            for key in self.__reproducedId.keys():
+                for r in self.__reproducedId[key]:
+                    if tempStr.find(r.upper()) >= 0:
+                        exportRow.append([key, CHANGE_STATUS])
+                        return
 
-        if "" == tempStr.lower():
-            exportRow.append([BLANK, WHITE_STATUS])
-        else:
-            exportRow.append([tempStr.lower().lstrip(']').strip(), ERROR_STATUS])
+        exportRow.append([importRow[JIRA_DESCRIPTION], ERROR_STATUS])
 
     def __insertIssuePriorityInPrism(self, importRow, exportRow):
         '''
@@ -752,5 +750,8 @@ class Issues(object):
         '''
         export all issues.
         '''
+        if DEBUG:
+            print "[EXEC] %s.%s" % (self.__class__.__name__, self.__tools.getCurrentFunctionName())
+
         self.__createSheet()
         self.__writeXlsFiles()
