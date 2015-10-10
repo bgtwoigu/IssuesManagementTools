@@ -18,6 +18,7 @@ AUTHOR: ZHAOSHENG LIU
             （1）将xlwt-1.0.0.tar.gz文件解壓縮。
             （2）進入解壓後的文件夾xlwt-1.0.0。
             （3）運行以下命令安裝。
+            	$sudo apt-get install python-setuptools(注意Ubuntu系統安裝xlwt工具時需要setuptools工具)
                 $python setup.py install (注意Ubuntu系統安裝時有可能需要Root權限安裝)
 
 2、導入文件存放目錄
